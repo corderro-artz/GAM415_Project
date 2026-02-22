@@ -1,0 +1,29 @@
+# Unreal Engine
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+.vs/
+.vscode/
+
+# Build results
+Build/
+*.log
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Rider / VS
+.idea/
+*.suo
+*.opensdf
+*.sdf
+
+# Unreal autosaves
+*.tmp
+*.bak
+*.old
+
+# Crash reports
+CrashReportClient/
