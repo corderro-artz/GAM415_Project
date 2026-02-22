@@ -30,10 +30,17 @@ class AGAM415_ProjectProjectile : public AActor
 	UPROPERTY(EditAnywhere) UStaticMeshComponent* ballMesh;
 	UPROPERTY(EditAnywhere) UMaterial* baseMat;
 
+	UPROPERTY() FLinearColor randColor;
+	UPROPERTY(EditAnywhere) UMaterialInterface* projMat;
+	UPROPERTY() UMaterialInstanceDynamic* dmiMat;
 
 public:
 	AGAM415_ProjectProjectile();
 
+protected:
+	virtual void BeginPlay();
+
+public:
 	/** called when projectile hits something */
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
