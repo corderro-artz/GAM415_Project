@@ -1,8 +1,12 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "GAM415_ProjectProjectile.h"
+
+#include "Components/DecalComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 
 AGAM415_ProjectProjectile::AGAM415_ProjectProjectile() 
 {
@@ -16,8 +20,15 @@ AGAM415_ProjectProjectile::AGAM415_ProjectProjectile()
 	CollisionComp->SetWalkableSlopeOverride(FWalkableSlopeOverride(WalkableSlope_Unwalkable, 0.f));
 	CollisionComp->CanCharacterStepUpOn = ECB_No;
 
-	// Set as root component
+	// ------------------------------------------------------------------------------------------------------
+	// ------ MODULE 2 CODE ---------------------------------------------------------------------------------
+	// ------------------------------------------------------------------------------------------------------
+
+	ballMesh = CreateDefaultSubobject<UStaticMeshComponent>("Ball Mesh");
 	RootComponent = CollisionComp;
+	ballMesh->SetupAttachment(CollisionComp);
+
+	// ------------------------------------------------------------------------------------------------------
 
 	// Use a ProjectileMovementComponent to govern this projectile's movement
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileComp"));
@@ -40,4 +51,23 @@ void AGAM415_ProjectProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* Othe
 
 		Destroy();
 	}
+
+	// ------------------------------------------------------------------------------------------------------
+	// ------ MODULE 2 CODE ---------------------------------------------------------------------------------
+	// ------------------------------------------------------------------------------------------------------
+	
+	float ranNumX = UKismetMathLibrary::RandomFloatInRange(0.f, 1.f);
+	float ranNumY = UKismetMathLibrary::RandomFloatInRange(0.f, 1.f);
+	float ranNumZ = UKismetMathLibrary::RandomFloatInRange(0.f, 1.f);
+	float frameNum = UKismetMathLibrary::RandomFloatInRange(0.f, 3.f);
+
+	FVector4 randColor = FVector4(ranNumX, ranNumY, ranNumZ, 1.f);
+
+	auto Decal = UGameplayStatics::SpawnDecalAtLocation(GetWorld(), baseMat, FVector(UKismetMathLibrary::RandomFloatInRange(20.f, 40.f)), Hit.Location, Hit.Normal.Rotation(), 0.f);
+	auto MatInstance = Decal->CreateDynamicMaterialInstance();
+
+	MatInstance->SetVectorParameterValue("Color", randColor);
+	MatInstance->SetScalarParameterValue("Frame", frameNum);
+
+	// ------------------------------------------------------------------------------------------------------
 }
