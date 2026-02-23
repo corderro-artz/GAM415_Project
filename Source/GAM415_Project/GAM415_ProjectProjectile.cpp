@@ -9,6 +9,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
+#include "PerlinProcTerrain.h"
 
 AGAM415_ProjectProjectile::AGAM415_ProjectProjectile() 
 {
@@ -77,22 +78,31 @@ void AGAM415_ProjectProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* Othe
 	if (OtherActor != nullptr)
 	{	
 
-		// ------ MODULE 3 CODE (NIAGARA) ---------------------------------------------------------------------
+		// ------ MODULE 3 CODE (NIAGARA) -------------------------------------------------------------------
 		if (colorP)
 		{
-			UNiagaraComponent* particleComp = UNiagaraFunctionLibrary::SpawnSystemAtLocation(colorP, HitComp, NAME_None, FVector(-20.f, 0.f, 0.f), FRotator(0.f), EAttachLocation::KeepRelativeOffset, true);
+			UNiagaraComponent* particleComp = UNiagaraFunctionLibrary::SpawnSystemAttached(colorP, HitComp, NAME_None, FVector(-20.f, 0.f, 0.f), FRotator(0.f), EAttachLocation::KeepRelativeOffset, true);
 			particleComp->SetNiagaraVariableLinearColor(FString("RandomColor"), randColor);
 			ballMesh->DestroyComponent();
 			CollisionComp->BodyInstance.SetCollisionProfileName("NoCollision");
 		}
-		// --------------------------------------------------------------------------------------------------
+		// ------ END MODULE 3 CODE -------------------------------------------------------------------------
 
 		float frameNum = UKismetMathLibrary::RandomFloatInRange(0.f, 3.f);
 		auto Decal = UGameplayStatics::SpawnDecalAtLocation(GetWorld(), baseMat, FVector(UKismetMathLibrary::RandomFloatInRange(20.f, 40.f)), Hit.Location, Hit.Normal.Rotation(), 0.f);
 		auto MatInstance = Decal->CreateDynamicMaterialInstance();
 		MatInstance->SetVectorParameterValue("Color", randColor);
 		MatInstance->SetScalarParameterValue("Frame", frameNum);
+
+		// ------ MODULE 4 CODE (Terrain Modification) ------------------------------------------------------
+		APerlinProcTerrain* procTerrain = Cast<APerlinProcTerrain>(OtherActor);
+		if (procTerrain)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 999.0f, FColor::Blue, FString::Printf(TEXT("Impact")));
+			procTerrain->AlterMesh(Hit.ImpactPoint);
+		}
+
 	}
 
-	// ------------------------------------------------------------------------------------------------------
+	// ------ END MODULE 2 CODE -----------------------------------------------------------------------------
 }
