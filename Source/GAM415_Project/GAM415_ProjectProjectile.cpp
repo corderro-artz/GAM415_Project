@@ -7,6 +7,8 @@
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
 
 AGAM415_ProjectProjectile::AGAM415_ProjectProjectile() 
 {
@@ -73,7 +75,18 @@ void AGAM415_ProjectProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* Othe
 	// ------------------------------------------------------------------------------------------------------
 	
 	if (OtherActor != nullptr)
-	{
+	{	
+
+		// ------ MODULE 3 CODE (NIAGARA) ---------------------------------------------------------------------
+		if (colorP)
+		{
+			UNiagaraComponent* particleComp = UNiagaraFunctionLibrary::SpawnSystemAtLocation(colorP, HitComp, NAME_None, FVector(-20.f, 0.f, 0.f), FRotator(0.f), EAttachLocation::KeepRelativeOffset, true);
+			particleComp->SetNiagaraVariableLinearColor(FString("RandomColor"), randColor);
+			ballMesh->DestroyComponent();
+			CollisionComp->BodyInstance.SetCollisionProfileName("NoCollision");
+		}
+		// --------------------------------------------------------------------------------------------------
+
 		float frameNum = UKismetMathLibrary::RandomFloatInRange(0.f, 3.f);
 		auto Decal = UGameplayStatics::SpawnDecalAtLocation(GetWorld(), baseMat, FVector(UKismetMathLibrary::RandomFloatInRange(20.f, 40.f)), Hit.Location, Hit.Normal.Rotation(), 0.f);
 		auto MatInstance = Decal->CreateDynamicMaterialInstance();

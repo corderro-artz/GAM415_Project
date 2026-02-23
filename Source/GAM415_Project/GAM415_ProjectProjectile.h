@@ -6,8 +6,12 @@
 #include "GameFramework/Actor.h"
 #include "GAM415_ProjectProjectile.generated.h"
 
+// --- MOD 2 INCLUDES 
 class USphereComponent;
 class UProjectileMovementComponent;
+
+// --- MOD 3 INCLUDES
+class UNiagaraSystem;
 
 UCLASS(config=Game)
 class AGAM415_ProjectProjectile : public AActor
@@ -33,6 +37,16 @@ class AGAM415_ProjectProjectile : public AActor
 	UPROPERTY() FLinearColor randColor;
 	UPROPERTY(EditAnywhere) UMaterialInterface* projMat;
 	UPROPERTY() UMaterialInstanceDynamic* dmiMat;
+
+	// ----------------------------------------------------------------------------------------------------
+
+	// ----------------------------------------------------------------------------------------------------
+	// ------ MODULE 3 CODE -------------------------------------------------------------------------------
+	// ----------------------------------------------------------------------------------------------------
+
+	UPROPERTY(EditAnywhere) UNiagaraSystem* colorP;
+
+	// ----------------------------------------------------------------------------------------------------
 
 public:
 	AGAM415_ProjectProjectile();
