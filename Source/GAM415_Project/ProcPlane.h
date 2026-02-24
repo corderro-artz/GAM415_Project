@@ -29,6 +29,8 @@ public:
 
 	UPROPERTY(EditAnywhere) TArray<FVector> Vertices;
 	UPROPERTY(EditAnywhere) TArray<int> Triangles;
+	UPROPERTY(EditAnywhere) TArray<FVector2D> UV0;
+	UPROPERTY(EditAnywhere) UMaterialInterface* PlaneMat;
 
 	UFUNCTION() void CreateMesh();
 

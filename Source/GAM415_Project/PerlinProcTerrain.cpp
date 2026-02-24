@@ -47,6 +47,40 @@ void APerlinProcTerrain::AlterMesh(FVector impactPoint)
 	}
 }
 
+/*void APerlinProcTerrain::AlterMesh(FVector impactPoint)
+{
+	bool bVertexChanged = false;
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("AlterMesh called!"));
+
+	for (int i = 0; i < Vertices.Num(); i++)
+	{
+		FVector vertexWorld = GetActorLocation() + Vertices[i];
+		float dist = FVector(vertexWorld - impactPoint).Size();
+		if (dist < Radius)
+		{
+			FString msg = FString::Printf(TEXT("Vertex %d before: Z=%f"), i, Vertices[i].Z);
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, msg);
+
+			Vertices[i].Z -= Depth.Z; // Only change Z
+			bVertexChanged = true;
+
+			msg = FString::Printf(TEXT("Vertex %d after: Z=%f"), i, Vertices[i].Z);
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, msg);
+		}
+	}
+
+	if (bVertexChanged)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Cyan, TEXT("Vertices changed, updating mesh section!"));
+		ProcMesh->UpdateMeshSection(sectionID, Vertices, Normals, UV0, UpVertexColors, TArray<FProcMeshTangent>());
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Magenta, TEXT("No vertices changed!"));
+	}
+}*/
+
 
 void APerlinProcTerrain::CreateVertices()
 {

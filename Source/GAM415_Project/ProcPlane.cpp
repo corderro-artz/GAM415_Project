@@ -24,12 +24,24 @@ void AProcPlane::PostActorCreated()
 {
 	Super::PostActorCreated();
 	CreateMesh();
+
+
+	if (PlaneMat)
+	{
+		ProcMesh->SetMaterial(0, PlaneMat);
+	}
 }
 
 void AProcPlane::PostLoad()
 {
 	Super::PostLoad();
 	CreateMesh();
+
+
+	if (PlaneMat)
+	{
+		ProcMesh->SetMaterial(0, PlaneMat);
+	}
 }
 
 // Called every frame
@@ -41,6 +53,6 @@ void AProcPlane::Tick(float DeltaTime)
 
 void AProcPlane::CreateMesh()
 {
-	ProcMesh->CreateMeshSection(0, Vertices, Triangles, TArray<FVector>(), TArray<FVector2D>(), TArray<FColor>(), TArray<FProcMeshTangent>(), true);
+	ProcMesh->CreateMeshSection(0, Vertices, Triangles, TArray<FVector>(), UV0, TArray<FColor>(), TArray<FProcMeshTangent>(), true);
 }
 
